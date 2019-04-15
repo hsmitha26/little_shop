@@ -30,26 +30,25 @@ RSpec.describe "As a merchant, when I visit my dashboard," do
     find_link('Promotional Offers').visible?
   end
 
-  it "I click on Promotional Offers link, I am taken to the page with all my discounted items" do
-    visit dashboard_path
+  it "I click on Items for Sale link, I see a button to add promotional offer for each item" do
+    visit dashboard_items_path
 
-    click_on "Promotional Offers"
-    expect(current_path).to eq(dashboard_discounts_path)
-
-    within "#dashboard-items-#{@item_1.id}" do
+    within "#item-#{@item_1.id}" do
       expect(page).to have_link(item.name)
       expect(page).to have_content("Sold by: #{item.user.name}")
       expect(page).to have_content("In stock: #{item.inventory}")
       expect(page).to have_content(number_to_currency(item.price))
       expect(page.find("#dashboard-items-#{@item_1.id}-image")['src']).to have_content(item.image)
+      find_button("Add New Discount")
     end
 
-    within "#dashboard-items-#{@item_2.id}" do
+    within "#item-#{@item_2.id}" do
       expect(page).to have_link(item.name)
       expect(page).to have_content("Sold by: #{item.user.name}")
       expect(page).to have_content("In stock: #{item.inventory}")
       expect(page).to have_content(number_to_currency(item.price))
       expect(page.find("#dashboard-items-#{@item_2.id}-image")['src']).to have_content(item.image)
+      find_button("Add New Discount")
     end
 
     expect(page).to_not have_content(@item_3.id)
